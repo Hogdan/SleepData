@@ -4,6 +4,7 @@ Console.WriteLine("Enter 2 to parse data.");
 Console.WriteLine("Enter anything else to quit.");
 // input response
 string? resp = Console.ReadLine();
+string file = "data.txt";
 
 if (resp == "1")
 {
@@ -45,5 +46,27 @@ if (resp == "1")
 else if (resp == "2")
 {
     // TODO: parse data file
+    if (File.Exists(file))
+    {
+        StreamReader sr = new(file);
 
+        while (!sr.EndOfStream)
+        {
+            int total = 0;
+            double average = 0;
+            string? line = sr.ReadLine();
+            string[] arr = String.IsNullOrEmpty(line) ? [] : line.Split(",");
+            DateTime fileDate = DateTime.Parse(arr[0]);
+            string[] hArr = arr[1].Split("|");
+            for (int i = 0; i < hArr.Length; i++) {
+                total += Convert.ToInt32(hArr[i]);
+            }
+            average = Convert.ToDouble(total)/7;
+            Console.WriteLine($"Week of {fileDate:MMM}, {fileDate:dd}, {fileDate:yyyy}");
+            Console.WriteLine(" Su Mo Tu We Th Fr Sa Tot Avg");
+            Console.WriteLine(" -- -- -- -- -- -- -- --- ---");
+            Console.WriteLine($"{hArr[0],3}{hArr[1],3}{hArr[2],3}{hArr[3],3}{hArr[4],3}{hArr[5],3}{hArr[6],3} {total,3} {average:n1}");
+            Console.WriteLine();
+        }
+    }
 }
